@@ -8,9 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * Created by shantanu on 11/16/18.
@@ -30,7 +33,13 @@ public class DemoController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/users")
-    public void getUser(@RequestBody User user) {
+    public void createUser(@RequestBody User user) {
         userService.saveUser(user);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping(path = "/users/{userId}")
+    public void updateUser(@PathVariable String userId, @RequestBody Map<String, Object> updateMap) {
+        userService.updateUser(userId, updateMap);
     }
 }

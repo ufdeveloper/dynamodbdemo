@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
  * Created by shantanu on 11/16/18.
  */@Slf4j
@@ -36,12 +38,29 @@ public class UserServiceImpl implements UserService {
     public void saveUser(User user) {
 
         try {
-            userRepository.saveIfNotExists(user);
+            userRepository.save(user);
         } catch (ConditionalCheckFailedException ccfe) {
             log.error("User already exists, user={}", user);
             throw new DuplicateRecordException("User already exists");
         }
 
         log.info("Successfully saved user={}", user);
+    }
+
+    @Override
+    public void updateUser(String userId, Map<String, Object> updateMap) {
+
+        User user = userRepository.findOne(userId);
+
+        user.setUserName(updateMap.get("userName").toString());
+
+        try {
+            userRepository.save(user);
+        } catch (ConditionalCheckFailedException ccfe) {
+            log.error("User already exists, user={}", user);
+            throw new DuplicateRecordException("User already exists");
+        }
+
+        log.info("Successfully updated user={}", user);
     }
 }
