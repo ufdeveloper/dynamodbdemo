@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,10 +50,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(String userId, Map<String, Object> updateMap) {
+        log.info("request received to update userId={}", userId);
 
-        User user = userRepository.findOne(userId);
+//        User user = userRepository.findOne(userId);
+        User user = new User();
+        user.setId(userId);
 
-        user.setUserName(updateMap.get("userName").toString());
+        for (Map.Entry<String, Object>keyValue : updateMap.entrySet()) {
+            Object value = keyValue.getValue();
+            String key = keyValue.getKey();
+            switch (key) {
+                case "userName" :
+                    user.setUserName((String) value);
+                    break;
+                case "firstName" :
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        log.error("sleep interrupted");
+                    }
+                    user.setFirstName((String) value);
+                    break;
+                case "lastName" :
+                    user.setLastName((String) value);
+                    break;
+                default: break;
+            }
+        }
 
         try {
             userRepository.save(user);

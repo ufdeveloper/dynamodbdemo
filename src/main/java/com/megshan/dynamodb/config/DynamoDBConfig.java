@@ -44,7 +44,7 @@ public class DynamoDBConfig {
     public DynamoDBMapperConfig dynamoDBMapperConfig() {
 
         DynamoDBMapperConfig.Builder builder = new DynamoDBMapperConfig.Builder();
-        builder.setSaveBehavior(DynamoDBMapperConfig.SaveBehavior.UPDATE);
+        builder.setSaveBehavior(DynamoDBMapperConfig.SaveBehavior.UPDATE_SKIP_NULL_ATTRIBUTES);
 
         return builder.build();
     }
